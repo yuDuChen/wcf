@@ -29,7 +29,7 @@ var allowComments = true, cb_blogId = 507909, cb_blogApp = 'yu-du-chen', cb_blog
 var cb_entryId = 12109062, cb_entryCreatedDate = '2019-11-21 19:53', cb_postType = 1;
 
 /*轮播*/
-$(function(){
+$(document).ready(function () {
     $("#imgBar").slider({
         imgs: [
             "https://i.loli.net/2020/05/11/KJV2jFZekBpO8RS.png",//1918 670
