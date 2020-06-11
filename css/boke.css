@@ -110,6 +110,7 @@ a,a:hover{
 /*第三方样式重写*/
 .at-menu--inline{
     border-right:0px;
+    margin-bottom: 210px;
 }
 .flex-center-count{
     height:calc(100% - 50px);
@@ -183,10 +184,46 @@ a,a:hover{
     height: 200px;
     margin-bottom: 10px;
 }
-.at-card:not(.at-card--no-hover):hover{
+.at-card img:not(.at-card--no-hover):hover{
     border-color: #6e6e6e;
     -webkit-box-shadow: 1px 0 16px 0 rgba(100,100,100,0.2);
     box-shadow: 1px 0 16px 0 rgba(100,100,100,0.2);
     cursor: url(https://cdn.jsdelivr.net/gh/yuDuChen/yuduchen@master/image/599783800335d.png), default !important;
 }
+.at-card-count .card_do_title{
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    background: black;
+    width: 90%;
+    margin: 0 auto;
+    color: white;
+    padding: 5px 35px;
+    border-radius: 2px;
+}
+.at-card-count .card_do_count{
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    border-radius: 4px;
+    background-color: #fff;
+    margin: 25px auto;
+    font-size: 12px;
+    letter-spacing: .6px;
+    font-family: Optima-Regular, Optima, PingFangTC-Light, PingFangSC-light, PingFangTC-light;
+    color: #b1b1b1;
+}
 /*第三方样式重写END*/
+.ydc_pager{
+    background: white;
+    border-radius: 3px;
+    margin: auto;
+    width: 100%;
+}
+.ydc_pager a{
+    color: #a6a6a6;
+    font-weight: bold;
+    padding: 0px 20px;
+}

@@ -9,11 +9,14 @@ let blogStats = $(".blogStats").find("span").clone();//随笔 文章 评论
 let day = $("#main .forFlow .day").clone();//博客文章按照时间集合
 let dayTitle = $("#main .forFlow .day .dayTitle").clone(); //时间集合标题
 let postTitle = $("#main .forFlow .day .postTitle a").clone(); //文章标题
+let postCon_count = $("#main .forFlow .day .postCon .c_b_p_desc").clone(); //文章内容链接
 let postCon_a = $("#main .forFlow .day .postCon a").clone(); //文章内容链接
 let postCon_img = $("#main .forFlow .day .postCon img").clone(); //文章内容图片
 let postDesc = $("#main .forFlow .day .postDesc").clone(); //文章操作
 let postDesc_a = $("#main .forFlow .day .postDesc a").clone(); //文章操作链接
 let pager_a = "https://www.cnblogs.com/yu-du-chen/default.html?page=${number}"; //分页
+let topicListFooter = $(".topicListFooter .pager").clone(); //文章操作链接
+
 
 let newsItem = $("#main #sideBar #sidebar_news #blog-news #profile_block a").clone();//昵称 园龄
 let toptags = $("#main #sideBar #sideBarMain #leftcontentcontainer #sidebar_toptags li a").clone();//我的标签
@@ -66,32 +69,82 @@ document.addEventListener('visibilitychange', function () {
     }
 });
 
-new Vue({
+function pager_init(h) {
+    console.log(h);
+    debugger
+    let postTitle_next;
+    let postCon_count_next;
+    $.ajax({
+        type : "POST",
+        url: h,
+        dataType:'html',
+        async: false,
+        success: function (data) {
+            debugger
+            console.log();
+            postTitle_next = $(data).clone().find("#main .forFlow .day .postTitle a").clone();
+            postCon_count_next = $(data).clone().find("#main .forFlow .day .postCon .c_b_p_desc").clone();
+        },
+        error : function(XMLHttpRequest, textStatus, errorThrown){
+            console.log(XMLHttpRequest.responseText);
+        }
+
+    });
+
+    $("#ydc_count").empty();
+    postTitle_next.each(function (i) {
+        vue.count.push({
+            title : $(this).html(),
+            href : $(this).attr("href"),
+            img: 'https://i.loli.net/2020/06/02/X9g6EiwCjxo8arv.jpg',
+            count: $(postCon_count_next[i]).text().replace("阅读全文","")
+        })
+    });
+}
+
+$(document).ready(function () {
+    //分页处理
+    var t = topicListFooter.clone();
+    t.find("a").each(function () {
+        var h = $(this).attr("href");
+        $(this).attr("href","javascript:void(0)");
+        $(this).attr("onclick","pager_init('"+h+"')");
+    });
+
+    $(".ydc_pager").append(t);
+    if(topicListFooter.length<=0){
+        $(".ydc_pager").append("<div class=\"pager\">" +
+            "<a href=\"javascript:void(0)\" onclick=\"pager_init('https://www.cnblogs.com/yu-du-chen/default.html?page=3')\">下一页</a>" +
+            "</div>");
+    }
+    //分页结束
+});
+
+//内容渲染
+var demo = [];
+postTitle.each(function (i) {
+    demo.push({
+        title : $(this).html(),
+        href : $(this).attr("href"),
+        img: 'https://i.loli.net/2020/06/02/X9g6EiwCjxo8arv.jpg',
+        count: $(postCon_count[i]).text().replace("阅读全文","")
+    })
+});
+var vue = new Vue({
     el: '.ydc_home',
     methods: {
-
+        change()  {
+            console.log(this)
+        }
     },
     data: {
-        items: [
-            { message: 'Foo' },
-            { message: 'Bar' }
-        ],
-        count: [
-            {
-                message: '456789',
-                img: 'https://i.loli.net/2020/06/02/X9g6EiwCjxo8arv.jpg'
-            },
-            {
-                message: 'asdfgh',
-                img: 'https://i.loli.net/2020/06/02/rU7FZLjfAv2BsXz.jpg'
-            },
-            {
-                message: '114fgh',
-                img: 'https://i.loli.net/2020/04/26/Twk4cuLfaMd8WQA.jpg'
-            }
-        ]
+        count:demo
     }
 });
+
 $(".at-menu__item-link").on("click",function () {
     //window.location.href = $(this).find("img").attr("to");
-})
+});
+$(".at-card img").on("click",function () {
+    console.log($(this));
+});
