@@ -227,3 +227,13 @@ a,a:hover{
     font-weight: bold;
     padding: 0px 20px;
 }
+#page_begin_html{
+    height: 100%;
+}
+.pager a {
+    border: 0px solid #9aafe5;
+    color: #2e6ab1;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
