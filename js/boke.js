@@ -41,8 +41,9 @@ $(document).ready(function () {
         x: 8,//横向格子数
         y: 3//纵向格子数
     });
-});
 
+    paperFooter(topicListFooter);
+});
 /*动画*/
 window.onload = function(){
     setTimeout(function () {
@@ -69,28 +70,27 @@ document.addEventListener('visibilitychange', function () {
     }
 });
 
+//分页
 function pager_init(h) {
-    console.log(h);
-    debugger
     let postTitle_next;
     let postCon_count_next;
+    let topicList_Footer;
     $.ajax({
         type : "POST",
         url: h,
         dataType:'html',
         async: false,
         success: function (data) {
-            debugger
-            console.log();
             postTitle_next = $(data).clone().find("#main .forFlow .day .postTitle a").clone();
             postCon_count_next = $(data).clone().find("#main .forFlow .day .postCon .c_b_p_desc").clone();
+            topicList_Footer = $(data).clone().find(".topicListFooter .pager").clone();
         },
         error : function(XMLHttpRequest, textStatus, errorThrown){
             console.log(XMLHttpRequest.responseText);
         }
 
     });
-
+    debugger
     $("#ydc_count").empty();
     postTitle_next.each(function (i) {
         vue.count.push({
@@ -100,11 +100,13 @@ function pager_init(h) {
             count: $(postCon_count_next[i]).text().replace("阅读全文","")
         })
     });
+    paperFooter(topicList_Footer);
 }
 
-$(document).ready(function () {
-    //分页处理
-    var t = topicListFooter.clone();
+//分页处理
+function paperFooter(topicLists) {
+    $(".ydc_pager").empty();
+    var t = topicLists.clone();
     t.find("a").each(function () {
         var h = $(this).attr("href");
         $(this).attr("href","javascript:void(0)");
@@ -112,14 +114,12 @@ $(document).ready(function () {
     });
 
     $(".ydc_pager").append(t);
-    if(topicListFooter.length<=0){
+    if(topicLists.length<=0){
         $(".ydc_pager").append("<div class=\"pager\">" +
-            "<a href=\"javascript:void(0)\" onclick=\"pager_init('https://www.cnblogs.com/yu-du-chen/default.html?page=3')\">下一页</a>" +
+            "<a href=\"javascript:void(0)\" onclick=\"pager_init('https://www.cnblogs.com/yu-du-chen/default.html?page=2')\">下一页</a>" +
             "</div>");
     }
-    //分页结束
-});
-
+}
 //内容渲染
 var demo = [];
 postTitle.each(function (i) {
@@ -143,7 +143,7 @@ var vue = new Vue({
 });
 
 $(".at-menu__item-link").on("click",function () {
-    //window.location.href = $(this).find("img").attr("to");
+    window.location.href = $(this).find("img").attr("to");
 });
 $(".at-card img").on("click",function () {
     console.log($(this));
