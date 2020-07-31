@@ -80,41 +80,42 @@ function pager_init(h) {
     $("#ydc_count").empty();
     $(".ydc_pager").empty();
     $(".loader").show();
-    setTimeout(function () {
-        $(".loader").fadeTo("slow",0.0,function () {
-            let v = $(this);
-            setTimeout(function () {
-                let postTitle_next;
-                let postCon_count_next;
-                let topicList_Footer;
-                $.ajax({
-                    type : "POST",
-                    url: h,
-                    dataType:'html',
-                    async: false,
-                    success: function (data) {
-                        postTitle_next = $(data).clone().find("#main .forFlow .day .postTitle a").clone();
-                        postCon_count_next = $(data).clone().find("#main .forFlow .day .postCon .c_b_p_desc").clone();
-                        topicList_Footer = $(data).clone().find(".topicListFooter .pager").eq(0).clone();
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown){
-                        console.log(XMLHttpRequest.responseText);
-                    }
+    let postTitle_next;
+    let postCon_count_next;
+    let topicList_Footer;
+    $.ajax({
+        type : "POST",
+        url: h,
+        dataType:'html',
+        async: false,
+        success: function (data) {
+            postTitle_next = $(data).clone().find("#main .forFlow .day .postTitle a").clone();
+            postCon_count_next = $(data).clone().find("#main .forFlow .day .postCon .c_b_p_desc").clone();
+            topicList_Footer = $(data).clone().find(".topicListFooter .pager").eq(0).clone();
+        },
+        error : function(XMLHttpRequest, textStatus, errorThrown){
+            console.log(XMLHttpRequest.responseText);
+        }
 
-                });
-                postTitle_next.each(function (i) {
-                    vue.count.push({
-                        title : $(this).html(),
-                        href : $(this).attr("href"),
-                        img: 'https://i.loli.net/2020/06/02/X9g6EiwCjxo8arv.jpg',
-                        count: $(postCon_count_next[i]).text().replace("阅读全文","")
-                    })
-                });
-                paperFooter(topicList_Footer);
-            }, 100);
-        });
-    }, 1000);
-
+    });
+    if(postTitle_next.length>0){
+        setTimeout(function () {
+            $(".loader").fadeTo("slow",0.0,function () {
+                let v = $(this);
+                setTimeout(function () {
+                    postTitle_next.each(function (i) {
+                        vue.count.push({
+                            title : $(this).html(),
+                            href : $(this).attr("href"),
+                            img: 'https://i.loli.net/2020/06/02/X9g6EiwCjxo8arv.jpg',
+                            count: $(postCon_count_next[i]).text().replace("阅读全文","")
+                        })
+                    });
+                    paperFooter(topicList_Footer);
+                }, 100);
+            });
+        }, 1000);
+    }
 }
 
 //分页处理
