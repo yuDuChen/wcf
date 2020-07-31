@@ -108,6 +108,19 @@ a,a:hover{
 }
 /*加载结束*/
 /*第三方样式重写*/
+#home{
+    display:none;
+}
+#page_end_html{
+    height: 100%;
+}
+.pager a {
+    border: 0px solid #9aafe5;
+    color: #2e6ab1;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
 .at-menu--inline{
     border-right:0px;
     margin-bottom: 210px;
@@ -226,14 +239,4 @@ a,a:hover{
     color: #a6a6a6;
     font-weight: bold;
     padding: 0px 20px;
-}
-#page_begin_html{
-    height: 100%;
-}
-.pager a {
-    border: 0px solid #9aafe5;
-    color: #2e6ab1;
-    margin: 0;
-    padding: 0;
-    text-decoration: none;
 }
