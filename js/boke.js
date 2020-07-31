@@ -27,7 +27,12 @@ let recentcomments = $("#main #sideBar #sideBarMain #leftcontentcontainer #sideb
 
 var allowComments = true, cb_blogId = 507909, cb_blogApp = 'yu-du-chen', cb_blogUserGuid = '418314f8-6f63-4e3c-defa-08d6bc2e5c73';
 var cb_entryId = 12109062, cb_entryCreatedDate = '2019-11-21 19:53', cb_postType = 1;
-
+var layer;
+!function () {
+    layui.use('layer', function(){
+        layer = layui.layer;
+    });
+}();
 /*轮播*/
 $(document).ready(function () {
     $("#imgBar").slider({
@@ -72,40 +77,48 @@ document.addEventListener('visibilitychange', function () {
 
 //分页
 function pager_init(h) {
-    let postTitle_next;
-    let postCon_count_next;
-    let topicList_Footer;
-    $.ajax({
-        type : "POST",
-        url: h,
-        dataType:'html',
-        async: false,
-        success: function (data) {
-            postTitle_next = $(data).clone().find("#main .forFlow .day .postTitle a").clone();
-            postCon_count_next = $(data).clone().find("#main .forFlow .day .postCon .c_b_p_desc").clone();
-            topicList_Footer = $(data).clone().find(".topicListFooter .pager").clone();
-        },
-        error : function(XMLHttpRequest, textStatus, errorThrown){
-            console.log(XMLHttpRequest.responseText);
-        }
-
-    });
-    debugger
     $("#ydc_count").empty();
-    postTitle_next.each(function (i) {
-        vue.count.push({
-            title : $(this).html(),
-            href : $(this).attr("href"),
-            img: 'https://i.loli.net/2020/06/02/X9g6EiwCjxo8arv.jpg',
-            count: $(postCon_count_next[i]).text().replace("阅读全文","")
-        })
-    });
-    paperFooter(topicList_Footer);
+    $(".ydc_pager").empty();
+    $(".loader").show();
+    setTimeout(function () {
+        $(".loader").fadeTo("slow",0.0,function () {
+            let v = $(this);
+            setTimeout(function () {
+                let postTitle_next;
+                let postCon_count_next;
+                let topicList_Footer;
+                $.ajax({
+                    type : "POST",
+                    url: h,
+                    dataType:'html',
+                    async: false,
+                    success: function (data) {
+                        postTitle_next = $(data).clone().find("#main .forFlow .day .postTitle a").clone();
+                        postCon_count_next = $(data).clone().find("#main .forFlow .day .postCon .c_b_p_desc").clone();
+                        topicList_Footer = $(data).clone().find(".topicListFooter .pager").eq(0).clone();
+                    },
+                    error : function(XMLHttpRequest, textStatus, errorThrown){
+                        console.log(XMLHttpRequest.responseText);
+                    }
+
+                });
+                postTitle_next.each(function (i) {
+                    vue.count.push({
+                        title : $(this).html(),
+                        href : $(this).attr("href"),
+                        img: 'https://i.loli.net/2020/06/02/X9g6EiwCjxo8arv.jpg',
+                        count: $(postCon_count_next[i]).text().replace("阅读全文","")
+                    })
+                });
+                paperFooter(topicList_Footer);
+            }, 100);
+        });
+    }, 1000);
+
 }
 
 //分页处理
 function paperFooter(topicLists) {
-    $(".ydc_pager").empty();
     var t = topicLists.clone();
     t.find("a").each(function () {
         var h = $(this).attr("href");
@@ -119,6 +132,8 @@ function paperFooter(topicLists) {
             "<a href=\"javascript:void(0)\" onclick=\"pager_init('https://www.cnblogs.com/yu-du-chen/default.html?page=2')\">下一页</a>" +
             "</div>");
     }
+    $(".loader").hide();
+    $(".loader").css("opacity","1");
 }
 //内容渲染
 var demo = [];
@@ -145,6 +160,6 @@ var vue = new Vue({
 $(".at-menu__item-link").on("click",function () {
     window.location.href = $(this).find("img").attr("to");
 });
-$(".at-card img").on("click",function () {
+$(".ydc_count .at-card__body img").on("click",function () {
     console.log($(this));
 });
