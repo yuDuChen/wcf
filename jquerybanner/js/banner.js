@@ -3,7 +3,7 @@ window.cancelAnimationFrame = window.cancelAnimationFrame||clearTimeout;
 function FragmentBanner(option) {
 
 	//实例化时，可传的参数
-	this.whiteList = ['container','controller','size','imgs','size','grid','index','fnTime','boxTime','type'];
+	this.whiteList = ['container','controller','size','imgs','size','grid','index','fnTime','boxTime','type','ispx'];
 
 	//容器将包容控制器
 	this.container = '.banner';
@@ -21,7 +21,7 @@ function FragmentBanner(option) {
 		line : 5,
 		list : 10
 	};
-
+	this.ispx = 'px';
 	//容器的大小
 	this.size = {
 		width : 1200,
@@ -71,8 +71,8 @@ FragmentBanner.prototype = {
 			return alert('获取banner容器失败');
 		}else{
 
-			this.container.style.width = this.size.width+'px';
-			this.container.style.height = this.size.height+'px';
+			this.container.style.width = this.size.width + this.ispx;
+			this.container.style.height = this.size.height + this.ispx;
 		}
 		
 		this.elem = {};
